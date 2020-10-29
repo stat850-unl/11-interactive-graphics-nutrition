@@ -7,6 +7,24 @@
 #    http://shiny.rstudio.com/
 #
 
+library(tidytuesdayR)
+library(tidyr)
+library(dplyr)
+library(readr)
+cocktails <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-05-26/cocktails.csv')
+boston_cocktails <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-05-26/boston_cocktails.csv')
+
+# Or read in with tidytuesdayR package (https://github.com/thebioengineer/tidytuesdayR)
+
+# Either ISO-8601 date or year/week works!
+
+# Install via devtools::install_github("thebioengineer/tidytuesdayR")
+
+tuesdata <- tidytuesdayR::tt_load('2020-05-26')
+tuesdata <- tidytuesdayR::tt_load(2020, week = 22)
+
+
+cocktails <- tuesdata$cocktails
 library(shiny)
 
 # Define UI for application that draws a histogram

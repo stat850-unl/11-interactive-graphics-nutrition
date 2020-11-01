@@ -21,7 +21,8 @@ ui <- fluidPage(
     
     mainPanel(
         tabsetPanel(
-            tabPanel("Barchart", plotOutput("category")),
+            tabPanel("Summary plot", plotOutput("category")),
+            tabPanel("Ingredient",DT::dataTableOutput("filter_ingredient")),
             tabPanel("Recipe",DT::dataTableOutput("recipe_table"))
         )
     )
@@ -50,14 +51,24 @@ server <- function(input, output) {
             ggtitle(paste("Number of", input$category, "Reports by Borough"))
     })
     
-    recipe_subset <- reactive({
-        boston_cocktails %>% 
+    ing_subset <- reactive({
+         boston_cocktails %>% 
             filter(category == input$category) %>% 
             filter(ingredient == input$ingredient)
     })
+    
+    output$filter_ingredient <- DT::renderDataTable({
+        DT::datatable(ing_subset(),escape = F)
+    })
+    
+    recipe_subset <- reactive({
+        chosed_row <- input$filter_ingredient_rows_selected
+        a <- ing_subset()$name[chosed_row]
+        boston_cocktails %>% filter(name %in% a)
+    })
+    
     output$recipe_table <- DT::renderDataTable({
-
-        
+        DT::datatable(recipe_subset(),escape = F)
     })
 }
 

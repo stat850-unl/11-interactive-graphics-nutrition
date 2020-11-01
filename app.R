@@ -10,15 +10,13 @@ ui <- fluidPage(
     titlePanel("Cocktails Categories"),
     
     sidebarPanel(
-        selectInput("category", "Category", choices = sort(unique(boston_cocktails$category)), selected = "Brandy")
+        selectInput("category", "Category", choices = sort(unique(boston_cocktails$category)), selected = "Brandy"),
+        selectizeInput("ingredient", label = "Select ingredient",choices = unique(boston_cocktails$ingredient),
+                       options = list(create = T)
+        )
     ),
     
-    br(),
-    h3("Choose ingredient"),
-    selectizeInput("ingredient", label = "Select ingredient",choices = unique(boston_cocktails$ingredient),
-                   options = list(create = T)
-                   ),
-    
+  
     mainPanel(
         tabsetPanel(
             tabPanel("Summary plot", plotOutput("category")),

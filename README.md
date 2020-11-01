@@ -10,3 +10,6 @@ Use the [TidyTuesday Cocktail Data](https://github.com/rfordatascience/tidytuesd
 Your applet should make use of reactivity in both components, but the specifics of what you do and how you do it are up to you.
 
 Once you're satisfied with your applet, upload it to [ShinyApps.io](https://www.shinyapps.io/) and edit this README to contain a link to your applet.
+
+Link to the applet:
+[https://lzhao.shinyapps.io/11-interactive-graphics-nutrition/](https://lzhao.shinyapps.io/11-interactive-graphics-nutrition/)

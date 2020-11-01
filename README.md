@@ -1,4 +1,7 @@
 # Animated and Interactive Graphics
+Yutong Liu
+
+Lin Zhao
 
 ## Instructions
 

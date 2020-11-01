@@ -1,67 +1,39 @@
-#
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
-
 library(tidytuesdayR)
 library(tidyr)
 library(dplyr)
 library(readr)
-cocktails <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-05-26/cocktails.csv')
 boston_cocktails <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-05-26/boston_cocktails.csv')
-
-# Or read in with tidytuesdayR package (https://github.com/thebioengineer/tidytuesdayR)
-
-# Either ISO-8601 date or year/week works!
-
-# Install via devtools::install_github("thebioengineer/tidytuesdayR")
-
-tuesdata <- tidytuesdayR::tt_load('2020-05-26')
-tuesdata <- tidytuesdayR::tt_load(2020, week = 22)
-
-
-cocktails <- tuesdata$cocktails
 library(shiny)
+library(ggplot2)
 
-# Define UI for application that draws a histogram
 ui <- fluidPage(
-
-    # Application title
-    titlePanel("Old Faithful Geyser Data"),
-
-    # Sidebar with a slider input for number of bins 
-    sidebarLayout(
-        sidebarPanel(
-            sliderInput("bins",
-                        "Number of bins:",
-                        min = 1,
-                        max = 50,
-                        value = 30)
-        ),
-
-        # Show a plot of the generated distribution
-        mainPanel(
-           plotOutput("distPlot")
+    
+    titlePanel("Cocktails Categories"),
+    
+    sidebarPanel(
+        selectInput("category", "Category", choices = sort(unique(boston_cocktails$category)), selected = "Cocktail Classics")
+    ),
+    mainPanel(
+        tabsetPanel(
+            tabPanel("Barchart", plotOutput("category"))
         )
     )
 )
 
-# Define server logic required to draw a histogram
 server <- function(input, output) {
-
-    output$distPlot <- renderPlot({
-        # generate bins based on input$bins from ui.R
-        x    <- faithful[, 2]
-        bins <- seq(min(x), max(x), length.out = input$bins + 1)
-
-        # draw the histogram with the specified number of bins
-        hist(x, breaks = bins, col = 'darkgray', border = 'white')
+    
+    cocktail_subset <- reactive({
+        boston_cocktails %>% filter(category == input$category)
     })
+    output$category <- renderPlot({
+        ggplot(data = cocktail_subset(), aes(x = name)) +
+            geom_line(stat="count") +
+            theme_bw() +
+            ggtitle(paste("Number of", input$category, "Reports by Borough"))
+    })
+    
 }
 
-# Run the application 
-shinyApp(ui = ui, server = server)
+shinyApp(ui, server)
+
+

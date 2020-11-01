@@ -3,7 +3,7 @@ library(shiny)
 library(ggplot2)
 library(DT)
 boston_cocktails <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-05-26/boston_cocktails.csv')
-
+boston_cocktails <- boston_cocktails[,c (1,2,5,6)]
 
 ui <- fluidPage(
     
@@ -48,7 +48,7 @@ server <- function(input, output) {
             theme_bw() +
             #scale_x_discrete(expand = c(0,2)) +
             coord_flip() +
-            ggtitle(paste("Number of", input$category, "Reports by Borough"))
+            ggtitle(paste("Number of", input$category, "Reports by Ingredients"))
     })
     
     ing_subset <- reactive({
